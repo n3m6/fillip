@@ -1,6 +1,6 @@
 fillip
 ======
-[![Build Status](https://travis-ci.org/[n3m6]/[fillip].png)](https://travis-ci.org/[n3m6]/[fillip])
+[![Build Status](https://travis-ci.org/n3m6/fillip.png)](https://travis-ci.org/n3m6/fillip)
 
 API middleware for Node.js and Connect/Express.
 
