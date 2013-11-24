@@ -1,0 +1,33 @@
+{
+  "name": "fillip",
+  "version": "0.0.0",
+  "description": "Node.js and Connect middleware to handle common API functions",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/n3m6/fillip.git"
+  },
+  "keywords": [
+    "express",
+    "connect",
+    "api",
+    "authentication",
+    "caching",
+    "logging"
+  ],
+  "author": "Abdulla Faraz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n3m6/fillip/issues"
+  },
+  "homepage": "https://github.com/n3m6/fillip",
+  "devDependencies": {
+    "mocha": ""
+  }
+}
