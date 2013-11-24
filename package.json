@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/n3m6/fillip",
   "devDependencies": {
-    "mocha": ""
+    "mocha": "",
+    "chai": ""
   }
 }
