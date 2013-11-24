@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         strict:   true,
         maxparams: 4,
         maxdepth: 3,
-        maxstatements: 10,
+        //maxstatements: 10,
         maxcomplexity: 10,
         globals: {
           console: true,
