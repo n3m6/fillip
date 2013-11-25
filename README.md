@@ -42,7 +42,7 @@ app.get('/api/hello:id', function(req, res){
 });
 ```
 
-Replace api.hello with your customer api function.
+Replace api.hello with your custome api function.
 
 ## API
 
