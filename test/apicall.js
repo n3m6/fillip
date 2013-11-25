@@ -23,10 +23,10 @@ describe('Fillip', function(){
       },
       routes: [{
         address: '/api/hello/:id',
-        controller: function(err, req, res, callback){
-          callback(err, req, res, { 
-            hello: req.params.id
-          });
+        controller: function(req, res){
+          return { 
+            hello: 'world'
+          };
         },
         caching: true
       }]
@@ -42,12 +42,41 @@ describe('Fillip', function(){
       request(app)
         .get('/api/test/1')
         .expect(404)
-        .end(function(err){
+        .end(function(err, res){
           if(err) {
             throw err;
           }
         });
     });
+
+    it('should expect a HTTP 200 status message if the path is detected', function(){
+      app.get('/api/hello/:id', function(req, res){
+        fillip.apicall(req,res);
+      });
+      request(app)
+        .get('/api/hello/1')
+        .expect(200)
+        .end(function(err, res){
+          if(err) {
+            throw err;
+          }
+        });
+    });
+
+    it('should invoke the correct controller', function(){
+      app.get('/api/hello/:id', function(req, res){
+        fillip.apicall(req, res);
+      });
+
+      request(app)
+        .get('/api/hello/1')
+        .expect(200)
+        .end(function(err, res){
+          assert(res.body.hello === 'world');
+        });
+
+    });
+
   });
 
 });
