@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     jshint: {
-      files: ['lib/*.js', 'test/*.js'],
+      files: ['lib/**/*.js', 'test/**/*.js'],
       options: {
         node:     true,
         bitwise:  true,
@@ -43,15 +43,26 @@ module.exports = function(grunt) {
           "afterEach":  false 
         }
       }
+    },
+
+    mochaTest: {
+      test: {
+        src: ['test/**/*.js'],
+        options: {
+          reporter: 'spec'
+        }
+      }
     }
 
   });
 
   //load plugins
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
   //register this task
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', 'jshint');
+  grunt.registerTask('test', 'mochaTest');
 
 };
 

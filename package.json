@@ -30,6 +30,8 @@
   "devDependencies": {
     "mocha": "",
     "chai": "",
-    "redis": ""
+    "redis": "",
+    "express": "",
+    "supertest": ""
   }
 }
