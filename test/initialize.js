@@ -17,9 +17,9 @@ describe('Fillip', function(){
           db:         redis
         },
         routes: [{
+          caching:    true,
           address:    '/api/hello',
           controller: function(){
-          caching:    true
           },
         }],
         

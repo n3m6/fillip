@@ -8,10 +8,13 @@ var expect = chai.expect;
 var express = require('express');
 var request = require('supertest');
 
-describe('Fillip', function(){
 
+var app = express();
+
+
+describe('Fillip', function(){
+    
   beforeEach(function(){
-    var app = express();
     fillip.initialize({
       logging: true,
       caching: {
@@ -20,8 +23,8 @@ describe('Fillip', function(){
       },
       routes: [{
         address: '/api/hello/:id',
-        controller: function(req, res, callback){
-          callback(req, res, { 
+        controller: function(err, req, res, callback){
+          callback(err, req, res, { 
             hello: req.params.id
           });
         },
@@ -31,8 +34,19 @@ describe('Fillip', function(){
   });
 
   describe('#apicall()', function(){
-    it('should throw an error if no request or response object is defined', function(){
-      // Test with Supertest by Visionmedia    
+    
+    it('should throw an error if route is not found for the request', function(){
+      app.get('/api/test/:id', function(req, res){
+        fillip.apicall(req,res);
+      });
+      request(app)
+        .get('/api/test/1')
+        .expect(404)
+        .end(function(err){
+          if(err) {
+            throw err;
+          }
+        });
     });
   });
 
