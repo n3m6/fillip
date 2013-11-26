@@ -63,6 +63,8 @@ describe('Fillip', function(){
         });
     });
 
+    it('should invoke the cache checker');
+
     it('should invoke the correct controller', function(){
       app.get('/api/hello/:id', function(req, res){
         fillip.apicall(req, res);
@@ -76,6 +78,10 @@ describe('Fillip', function(){
         });
 
     });
+
+    it('should invoke the cache writer');
+
+    it('should invoke the logger');
 
   });
 
