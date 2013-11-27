@@ -18,12 +18,12 @@ describe('Fillip', function(){
         },
         routes: { 
           hello: {
-            caching:    true,
-            expiry:     60,
             address:    '/api/hello',
             controller: function(jsonCall){
               jsonCall({ hello: 'world' });
             },
+            caching:    true,
+            expiry:     60
           }
         }
       });
@@ -35,6 +35,8 @@ describe('Fillip', function(){
       assert.isObject(fillip.routes, 'routes array not found');
       assert.isString(fillip.routes.hello.address, '1st route has no route defined');
       assert.isFunction(fillip.routes.hello.controller, '1st route has no controller');
+      assert.isBoolean(fillip.routes.hello.caching, '1st route cache is not a boolean');
+      assert.isNumber(fillip.routes.hello.expiry, '1st route cache expiry is not a number');
     });
     
     it('should throw an error if logging is not defined', function(){
