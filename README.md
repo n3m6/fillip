@@ -33,7 +33,8 @@ fillip.initialize({
   routes: [{
     address:    '/api/hello/:id',
     controller: api.hello,
-    caching:    true
+    caching:    true,
+    expiry:     300
   }]
 });
 
@@ -43,6 +44,19 @@ app.get('/api/hello:id', function(req, res){
 ```
 
 Replace __api.hello__ with your custom api function.
+
+Your controller function should invoke a callback with the json object, as follows -
+
+```javascript
+exports.hello = function(jsonCall){
+  var json = {
+    hello: 'world'
+  };
+
+  jsonCall(json);
+
+};
+```
 
 ## API
 
@@ -57,8 +71,9 @@ Replace __api.hello__ with your custom api function.
     - db (takes a redis object)
   - routes (an array of routes and their controller functions)
     - address (express.js route that will be handled through middleware)
-    - controller (your customer api function, must return a javascript object)
+    - controller (your api function, must invoke a callback with the json object)
     - caching (optional field, boolean, if true will store objects in db)
+    - expiry (if caching is set, this must be set as well, in seconds, accepts only numbers)
 
 ### fillip.apicall()
   Invoke this method to let the middle ware handle the request.
