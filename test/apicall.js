@@ -10,7 +10,10 @@ var request = require('supertest');
 
 
 var app = express();
-
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret: 'helloworldoneminute'}));
+app.use(app.router);
 
 describe('Fillip', function(){
     
@@ -21,15 +24,26 @@ describe('Fillip', function(){
         type: 'redis',
         db: redis
       },
-      routes: [{
-        address: '/api/hello/:id',
-        controller: function(req, res){
-          return { 
-            hello: 'world'
-          };
+      routes: {
+        hello: {
+          address: '/api/hello/:id',
+          controller: function(req, res){
+            return { 
+              hello: 'world'
+            };
+          },
+          caching: true
         },
-        caching: true
-      }]
+        world: {
+          address: '/api/world/:worldid',
+          controller: function(req,res){
+            return {
+              not: 'this'
+            };
+          },
+          caching: true
+        }
+      }
     });
   });
 
@@ -40,16 +54,17 @@ describe('Fillip', function(){
         fillip.apicall(req,res);
       });
       request(app)
-        .get('/api/test/1')
+        .get('/api/test/?callback=json_callback')
         .expect(404)
         .end(function(err, res){
           if(err) {
-            throw err;
+            //console.log(err);
+          } else {
           }
         });
     });
 
-    it('should expect a HTTP 200 status message if the path is detected', function(){
+    it('should expect a HTTP 200 status message if the path is detected', function(done){
       app.get('/api/hello/:id', function(req, res){
         fillip.apicall(req,res);
       });
@@ -58,14 +73,17 @@ describe('Fillip', function(){
         .expect(200)
         .end(function(err, res){
           if(err) {
-            throw err;
+            //console.log(err);
+            done(err);
+          } else {
+            done();
           }
         });
     });
 
-    it('should invoke the cache checker');
+    it('should return the request from cache if it is available');
 
-    it('should invoke the correct controller', function(){
+    it('should invoke the correct controller', function(done){
       app.get('/api/hello/:id', function(req, res){
         fillip.apicall(req, res);
       });
@@ -74,14 +92,21 @@ describe('Fillip', function(){
         .get('/api/hello/1')
         .expect(200)
         .end(function(err, res){
-          assert(res.body.hello === 'world');
+          if(err) {
+            //console.log(err);
+            done(err);
+          } else {
+            //console.log(res.body);
+            assert(res.body.hello === 'world');
+            done();
+          }
         });
 
     });
 
-    it('should invoke the cache writer');
+    it('should write to cache if it was previously not stored');
 
-    it('should invoke the logger');
+    it('should write all requests to log if logging is enabled');
 
   });
 
