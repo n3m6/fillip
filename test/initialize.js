@@ -19,8 +19,10 @@ describe('Fillip', function(){
         routes: { 
           hello: {
             caching:    true,
+            expiry:     60,
             address:    '/api/hello',
-            controller: function(){
+            controller: function(jsonCall){
+              jsonCall({ hello: 'world' });
             },
           }
         }
@@ -211,12 +213,51 @@ describe('Fillip', function(){
           routes: {
             hello: {
               address: '/api/user',
-              controller: function(){ return 'hello'; },
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
               caching: 1
             }
           }
         });
       }, 'Fillip route caching option is not a boolean value');
+    });
+
+    it('should throw an error if caching is enabled and expiry is not set', function(){
+      assert.throw(function(){
+        fillip.initialize({
+          logging: true,
+          caching: {
+            type: 'redis', 
+            db: redis
+          },
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
+              caching: true
+            }
+          }
+        });
+      }, 'Fillip route cache expiry is not set');
+    });
+
+    it('should throw an error if cache expiry is not a number', function(){
+      assert.throw(function(){
+        fillip.initialize({
+          logging: true,
+          caching: {
+            type: 'redis', 
+            db: redis
+          },
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
+              caching: true,
+              expiry: 'foahbodey'
+            }
+          }
+        });
+      }, 'Fillip route cache expiry is not a number');
     });
 
     it('should create a redis client on initialization', function(){
@@ -229,8 +270,9 @@ describe('Fillip', function(){
         routes: {
           hello: {
             address: '/api/user', 
-            controller: function () { return 'hello'; }, 
-            caching: true
+            controller: function (jsonCall) { jsonCall({ hello: 'hello' }); }, 
+            caching: true,
+            expiry: 60
           }
         }
       });

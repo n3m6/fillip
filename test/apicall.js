@@ -4,7 +4,7 @@ var fillip = require('../');
 var redis = require('redis');
 var chai = require('chai');
 var assert = chai.assert;
-var expect = chai.expect;
+//var expect = chai.expect;
 var express = require('express');
 var request = require('supertest');
 
@@ -27,21 +27,23 @@ describe('Fillip', function(){
       routes: {
         hello: {
           address: '/api/hello/:id',
-          controller: function(req, res){
-            return { 
+          controller: function(jsonCall){
+            jsonCall({ 
               hello: 'world'
-            };
+            });  
           },
-          caching: true
+          caching: true,
+          expiry: 60
         },
         world: {
           address: '/api/world/:worldid',
-          controller: function(req,res){
-            return {
+          controller: function(jsonCall){
+            jsonCall({
               not: 'this'
-            };
+            });
           },
-          caching: true
+          caching: true,
+          expiry: 60
         }
       }
     });
@@ -49,17 +51,19 @@ describe('Fillip', function(){
 
   describe('#apicall()', function(){
     
-    it('should throw an error if route is not found for the request', function(){
+    it('should throw an error if route is not found for the request', function(done){
       app.get('/api/test/:id', function(req, res){
         fillip.apicall(req,res);
       });
       request(app)
         .get('/api/test/?callback=json_callback')
         .expect(404)
-        .end(function(err, res){
+        .end(function(err){
           if(err) {
             //console.log(err);
+            done(err);
           } else {
+            done();
           }
         });
     });
@@ -71,7 +75,7 @@ describe('Fillip', function(){
       request(app)
         .get('/api/hello/1')
         .expect(200)
-        .end(function(err, res){
+        .end(function(err){
           if(err) {
             //console.log(err);
             done(err);
