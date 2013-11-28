@@ -30,12 +30,14 @@ fillip.initialize({
     type:   'redis',
     db:     redis
   },
-  routes: [{
-    address:    '/api/hello/:id',
-    controller: api.hello,
-    caching:    true,
-    expiry:     300
-  }]
+  routes: {
+    hello: {
+      address:    '/api/hello/:id',
+      controller: api.hello,
+      caching:    true,
+      expiry:     300
+    }
+  }
 });
 
 app.get('/api/hello:id', function(req, res){
@@ -69,14 +71,14 @@ exports.hello = function(jsonCall){
   - caching (javascript object) 
     - type (currently supports only 'redis')
     - db (takes a redis object)
-  - routes (an array of routes and their controller functions)
+  - routes (named objects with the following parameters, name must be unique)
     - address (express.js route that will be handled through middleware)
     - controller (your api function, must invoke a callback with the json object)
     - caching (optional field, boolean, if true will store objects in db)
     - expiry (if caching is set, this must be set as well, in seconds, accepts only numbers)
 
-### fillip.apicall()
-  Invoke this method to let the middle ware handle the request.
+### fillip.apicall(req, res)
+  Invoke this method to let the middleware handle the request. Pass in express's request & response.
 
 ## License
 
