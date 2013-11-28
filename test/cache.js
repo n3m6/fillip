@@ -160,7 +160,7 @@ describe('Fillip', function(){
                   'store cache object and reply not the same');
                 done();
               });  
-            });
+          });
         });
     });
 
@@ -201,7 +201,7 @@ describe('Fillip', function(){
                   'stored cache object and reply is the same');
                 done();
               });  
-            });
+          });
         });
     });
 
@@ -220,12 +220,12 @@ describe('Fillip', function(){
             .get('/api/sun/1')
             .set('cookie', cookie)
             .expect(200)
-            .end(function(err, res){
+            .end(function(err){
               if(err){
                 throw err;
               }
             });
-        })
+        });
     });
     
     //it block

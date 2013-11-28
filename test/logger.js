@@ -68,45 +68,8 @@ describe('Fillip', function(){
         });
     });
 
-    it('should expect a HTTP 200 status message if the path is detected', function(done){
-      app.get('/api/hello/:id', function(req, res){
-        fillip.apicall(req,res);
-      });
-      request(app)
-        .get('/api/hello/1')
-        .expect(200)
-        .end(function(err){
-          if(err) {
-            //console.log(err);
-            done(err);
-          } else {
-            done();
-          }
-        });
-    });
+    it('should write all requests to log if logging is enabled');
 
-    it('should invoke the correct controller', function(done){
-      app.get('/api/hello/:id', function(req, res){
-        fillip.apicall(req, res);
-      });
-
-      request(app)
-        .get('/api/hello/1')
-        .expect(200)
-        .end(function(err, res){
-          if(err) {
-            //console.log(err);
-            done(err);
-          } else {
-            //console.log(res.body);
-            assert(res.body.hello === 'world');
-            done();
-          }
-        });
-
-    });
-
-    //it block
   });
 
 });
