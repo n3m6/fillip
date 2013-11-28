@@ -23,7 +23,7 @@ describe('Fillip', function(){
               jsonCall({ hello: 'world' });
             },
             caching:    true,
-            expiry:     60
+            expiry: 60
           }
         }
       });
