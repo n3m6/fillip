@@ -83,7 +83,7 @@ exports.hello = function(params, jsonCall){
 
 ## Limitations
 
-  - Currently supports only one parameter URL (eg. /api/hello/:hellid )
+  - Currently supports only one parameter URL (eg. /api/hello/:id )
   - Logging functionality does not work yet
 
 ## License
