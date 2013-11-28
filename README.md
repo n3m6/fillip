@@ -1,5 +1,5 @@
 # fillip
-======
+
 [![Build Status](https://travis-ci.org/n3m6/fillip.png)](https://travis-ci.org/n3m6/fillip)
 
 API middleware for Node.js and Connect/Express.
@@ -16,7 +16,7 @@ plugin to handle common API related funcationality.
 
 ## Example
 
-```
+```javascript
 var fillip  = require('fillip');
 var express = require('express');
 var redis   = require('redis');
@@ -33,7 +33,8 @@ fillip.initialize({
   routes: [{
     address:    '/api/hello/:id',
     controller: api.hello,
-    caching:    true
+    caching:    true,
+    expiry:     300
   }]
 });
 
@@ -42,7 +43,20 @@ app.get('/api/hello:id', function(req, res){
 });
 ```
 
-Replace api.hello with your custome api function.
+Replace __api.hello__ with your custom api function.
+
+Your controller function should invoke a callback with the json object, as follows -
+
+```javascript
+exports.hello = function(jsonCall){
+  var json = {
+    hello: 'world'
+  };
+
+  jsonCall(json);
+
+};
+```
 
 ## API
 
@@ -57,8 +71,9 @@ Replace api.hello with your custome api function.
     - db (takes a redis object)
   - routes (an array of routes and their controller functions)
     - address (express.js route that will be handled through middleware)
-    - controller (your customer api function, must return a javascript object)
+    - controller (your api function, must invoke a callback with the json object)
     - caching (optional field, boolean, if true will store objects in db)
+    - expiry (if caching is set, this must be set as well, in seconds, accepts only numbers)
 
 ### fillip.apicall()
   Invoke this method to let the middle ware handle the request.
@@ -69,22 +84,5 @@ Replace api.hello with your custome api function.
 
 Copyright (c) 2013 Abdulla Faraz <abdulla.faraz@gmail.com>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
+Refer to included LICENSE file.
 

@@ -16,21 +16,27 @@ describe('Fillip', function(){
           type:       'redis',
           db:         redis
         },
-        routes: [{
-          caching:    true,
-          address:    '/api/hello',
-          controller: function(){
-          },
-        }],
-        
-      }); 
+        routes: { 
+          hello: {
+            address:    '/api/hello',
+            controller: function(jsonCall){
+              jsonCall({ hello: 'world' });
+            },
+            caching:    true,
+            expiry: 60
+          }
+        }
+      });
+      
       assert.isBoolean(fillip.logging, 'logging option not found');
       assert.isObject(fillip.caching, 'caching options not found');
       assert.isString(fillip.caching.type, 'caching type not found');
       assert.isObject(fillip.caching.db, 'caching db object not found');
-      assert.isArray(fillip.routes, 'routes array not found');
-      assert.isString(fillip.routes[0].address, '1st route has no route defined');
-      assert.isFunction(fillip.routes[0].controller, '1st route has no controller');
+      assert.isObject(fillip.routes, 'routes array not found');
+      assert.isString(fillip.routes.hello.address, '1st route has no route defined');
+      assert.isFunction(fillip.routes.hello.controller, '1st route has no controller');
+      assert.isBoolean(fillip.routes.hello.caching, '1st route cache is not a boolean');
+      assert.isNumber(fillip.routes.hello.expiry, '1st route cache expiry is not a number');
     });
     
     it('should throw an error if logging is not defined', function(){
@@ -139,9 +145,9 @@ describe('Fillip', function(){
             type: 'redis',
             db: redis
           },
-          routes: [{
+          routes: {
             nothing: 'no'
-          }]
+          }
         });
       }, 'Fillip route address missing');
     });
@@ -154,9 +160,11 @@ describe('Fillip', function(){
             type: 'redis',
             db: redis
           },
-          routes: [{
-            address: 1
-          }]
+          routes: {
+            hello: {
+              address: 1
+            }
+          }
         });
       }, 'Fillip route address is not a string');
     });
@@ -169,9 +177,11 @@ describe('Fillip', function(){
             type: 'redis',
             db: redis
           },
-          routes: [{
-            address: '/api/user'
-          }]
+          routes: {
+            hello: {
+              address: '/api/user'
+            }
+          }
         });
       }, 'Fillip route controller missing');
     });
@@ -184,10 +194,12 @@ describe('Fillip', function(){
             type: 'redis',
             db: redis
           },
-          routes: [{
-            address: '/api/user',
-            controller: { hello: 1 }
-          }]
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: { hello: 1 }
+            }
+          }
         });
       }, 'Fillip route controller is not a function');
     });
@@ -200,17 +212,75 @@ describe('Fillip', function(){
             type: 'redis',
             db: redis
           },
-          routes: [{
-            address: '/api/user',
-            controller: function(){ return 'hello'; },
-            caching: 1
-          }]
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
+              caching: 1
+            }
+          }
         });
       }, 'Fillip route caching option is not a boolean value');
     });
 
-  });
+    it('should throw an error if caching is enabled and expiry is not set', function(){
+      assert.throw(function(){
+        fillip.initialize({
+          logging: true,
+          caching: {
+            type: 'redis', 
+            db: redis
+          },
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
+              caching: true
+            }
+          }
+        });
+      }, 'Fillip route cache expiry is not set');
+    });
 
+    it('should throw an error if cache expiry is not a number', function(){
+      assert.throw(function(){
+        fillip.initialize({
+          logging: true,
+          caching: {
+            type: 'redis', 
+            db: redis
+          },
+          routes: {
+            hello: {
+              address: '/api/user',
+              controller: function(jsonCall){ jsonCall({ world: 'hello' }); },
+              caching: true,
+              expiry: 'foahbodey'
+            }
+          }
+        });
+      }, 'Fillip route cache expiry is not a number');
+    });
+
+    it('should create a redis client on initialization', function(){
+      fillip.initialize({
+        logging: true,
+        caching: {
+          type: 'redis',
+          db: redis
+        },
+        routes: {
+          hello: {
+            address: '/api/user', 
+            controller: function (jsonCall) { jsonCall({ hello: 'hello' }); }, 
+            caching: true,
+            expiry: 60
+          }
+        }
+      });
+      assert.isObject(fillip.caching.client, 'db client attached as function');
+    });
+  });
 });
 
 

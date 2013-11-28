@@ -52,6 +52,13 @@ module.exports = function(grunt) {
           reporter: 'spec'
         }
       }
+    },
+
+    watch: {
+      all: {
+        files: ['test/**/*.js', 'lib/**/*.js'],
+        tasks: ['mochaTest']
+      }
     }
 
   });
@@ -59,10 +66,13 @@ module.exports = function(grunt) {
   //load plugins
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   //register this task
   grunt.registerTask('default', 'jshint');
+  grunt.registerTask('hint', 'jshint');
   grunt.registerTask('test', 'mochaTest');
+  //grunt.registerTask('watch', 'watch:all');
 
 };
 

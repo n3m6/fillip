@@ -2,6 +2,7 @@
 
 var fillip = require('../');
 var redis = require('redis');
+var redisClient = redis.createClient();
 var chai = require('chai');
 var assert = chai.assert;
 //var expect = chai.expect;
@@ -49,7 +50,7 @@ describe('Fillip', function(){
     });
   });
 
-  describe('#apicall()', function(){
+  describe('#apicall() Cache', function(){
     
     it('should throw an error if route is not found for the request', function(done){
       app.get('/api/test/:id', function(req, res){
@@ -68,47 +69,11 @@ describe('Fillip', function(){
         });
     });
 
-    it('should expect a HTTP 200 status message if the path is detected', function(done){
-      app.get('/api/hello/:id', function(req, res){
-        fillip.apicall(req,res);
-      });
-      request(app)
-        .get('/api/hello/1')
-        .expect(200)
-        .end(function(err){
-          if(err) {
-            //console.log(err);
-            done(err);
-          } else {
-            done();
-          }
-        });
-    });
-
-    it('should invoke the correct controller', function(done){
-      app.get('/api/hello/:id', function(req, res){
-        fillip.apicall(req, res);
-      });
-
-      request(app)
-        .get('/api/hello/1')
-        .expect(200)
-        .end(function(err, res){
-          if(err) {
-            //console.log(err);
-            done(err);
-          } else {
-            //console.log(res.body);
-            assert(res.body.hello === 'world');
-            done();
-          }
-        });
-
-    });
-
-    it('should write all requests to log if logging is enabled');
+    it('should return the request from cache if it is available');
+    it('should write to cache if it was previously not stored');
 
   });
+
 
 });
 

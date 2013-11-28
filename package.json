@@ -1,6 +1,6 @@
 {
   "name": "fillip",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Node.js and Connect middleware to handle common API functions",
   "main": "lib/index.js",
   "directories": {
