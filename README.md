@@ -47,10 +47,11 @@ app.get('/api/hello:id', function(req, res){
 
 Replace __api.hello__ with your custom api function.
 
-Your controller function should invoke a callback with the json object, as follows -
+Your controller receives a params object and a callback function. The params object contains request parameters in an associative array.
+Your controller should invoke the callback with the json object, as follows -
 
 ```javascript
-exports.hello = function(jsonCall){
+exports.hello = function(params, jsonCall){
   var json = {
     hello: 'world'
   };
@@ -79,6 +80,11 @@ exports.hello = function(jsonCall){
 
 ### fillip.apicall(req, res)
   Invoke this method to let the middleware handle the request. Pass in express's request & response.
+
+## Limitations
+
+  - Currently supports only one parameter URL (eg. /api/hello/:hellid )
+  - Logging functionality does not work yet
 
 ## License
 
