@@ -6,10 +6,10 @@ var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
 
-describe('Fillip', function(){
-  describe('#initialize()', function(){
+describe('Fillip', function () {
+  describe('#initialize()', function () {
     
-    it('should set parameters for the Fillip object', function(){
+    it('should set parameters for the Fillip object', function () {
       fillip.initialize({
         logging:      true,
         caching: {
@@ -19,7 +19,7 @@ describe('Fillip', function(){
         routes: { 
           hello: {
             address:    '/api/hello',
-            controller: function(params, jsonCall){
+            controller: function (params, jsonCall) {
               jsonCall({ hello: 'world' });
             },
             caching:    true,
@@ -39,24 +39,24 @@ describe('Fillip', function(){
       assert.isNumber(fillip.routes.hello.expiry, '1st route cache expiry is not a number');
     });
     
-    it('should throw an error if logging is not defined', function(){
-      expect(function(){
+    it('should throw an error if logging is not defined', function () {
+      expect(function () {
         fillip.initialize({
           // no logging option given
         });
       }).to.throw();
     });
     
-    it('should throw an error if logging is not a boolean', function(){
-      assert.throw(function(){
+    it('should throw an error if logging is not a boolean', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: 'hello'
         });
       }, 'Fillip logging option is not boolean');
     });
     
-    it('should throw an error if a caching object is not given', function(){
-      assert.throw(function(){
+    it('should throw an error if a caching object is not given', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true
           // no caching option given
@@ -64,8 +64,8 @@ describe('Fillip', function(){
       }, 'Fillip caching option not defined');
     });
     
-    it('should throw an error if caching object does not have a type', function(){
-      assert.throw(function(){
+    it('should throw an error if caching object does not have a type', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -74,8 +74,8 @@ describe('Fillip', function(){
       }, 'Fillip caching type is not given');
     });
     
-    it('should throw an error if caching object is of an unrecognized type', function(){
-      assert.throw(function(){
+    it('should throw an error if caching object is of an unrecognized type', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -85,8 +85,8 @@ describe('Fillip', function(){
       }, 'Fillip caching type is of unknown type');
     });
     
-    it('should throw an error if caching object does not have a db attached', function(){
-      assert.throw(function(){
+    it('should throw an error if caching object does not have a db attached', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -97,8 +97,8 @@ describe('Fillip', function(){
       }, 'Fillip caching db not attached');
     });
     
-    it('should throw an error if caching object db mismatches with defined type', function(){
-      assert.throw(function(){
+    it('should throw an error if caching object db mismatches with defined type', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -111,8 +111,8 @@ describe('Fillip', function(){
       }, 'Fillip caching db mismatches with defined type');
     });
     
-    it('should throw an error if route array is not given', function(){
-      assert.throw(function(){
+    it('should throw an error if route array is not given', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true, 
           caching: {
@@ -124,8 +124,8 @@ describe('Fillip', function(){
       }, 'Fillip route array not given');
     });
     
-    it('should throw an error if route array is empty', function(){
-      assert.throw(function(){
+    it('should throw an error if route array is empty', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -137,8 +137,8 @@ describe('Fillip', function(){
       }, 'Fillip route array is empty');
     });
     
-    it('should throw an error if routes have missing addresses', function(){
-      assert.throw(function(){
+    it('should throw an error if routes have missing addresses', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -152,8 +152,8 @@ describe('Fillip', function(){
       }, 'Fillip route address missing');
     });
     
-    it('should throw an error if route addresses are not strings', function(){
-      assert.throw(function(){
+    it('should throw an error if route addresses are not strings', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -169,8 +169,8 @@ describe('Fillip', function(){
       }, 'Fillip route address is not a string');
     });
     
-    it('should throw an error if routes have missing controllers', function(){
-      assert.throw(function(){
+    it('should throw an error if routes have missing controllers', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -186,8 +186,8 @@ describe('Fillip', function(){
       }, 'Fillip route controller missing');
     });
     
-    it('should throw an error if route controllers are not functions', function(){
-      assert.throw(function(){
+    it('should throw an error if route controllers are not functions', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true, 
           caching: {
@@ -204,8 +204,8 @@ describe('Fillip', function(){
       }, 'Fillip route controller is not a function');
     });
     
-    it('should throw an error if optional caching option is not a boolean', function(){
-      assert.throw(function(){
+    it('should throw an error if optional caching option is not a boolean', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -215,7 +215,7 @@ describe('Fillip', function(){
           routes: {
             hello: {
               address: '/api/user',
-              controller: function(params, jsonCall){ jsonCall({ world: 'hello' }); },
+              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: 1
             }
           }
@@ -223,8 +223,8 @@ describe('Fillip', function(){
       }, 'Fillip route caching option is not a boolean value');
     });
 
-    it('should throw an error if caching is enabled and expiry is not set', function(){
-      assert.throw(function(){
+    it('should throw an error if caching is enabled and expiry is not set', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -234,7 +234,7 @@ describe('Fillip', function(){
           routes: {
             hello: {
               address: '/api/user',
-              controller: function(params, jsonCall){ jsonCall({ world: 'hello' }); },
+              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: true
             }
           }
@@ -242,8 +242,8 @@ describe('Fillip', function(){
       }, 'Fillip route cache expiry is not set');
     });
 
-    it('should throw an error if cache expiry is not a number', function(){
-      assert.throw(function(){
+    it('should throw an error if cache expiry is not a number', function () {
+      assert.throw(function () {
         fillip.initialize({
           logging: true,
           caching: {
@@ -253,7 +253,7 @@ describe('Fillip', function(){
           routes: {
             hello: {
               address: '/api/user',
-              controller: function(params, jsonCall){ jsonCall({ world: 'hello' }); },
+              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: true,
               expiry: 'foahbodey'
             }
@@ -262,7 +262,7 @@ describe('Fillip', function(){
       }, 'Fillip route cache expiry is not a number');
     });
 
-    it('should create a redis client on initialization', function(){
+    it('should create a redis client on initialization', function () {
       fillip.initialize({
         logging: true,
         caching: {

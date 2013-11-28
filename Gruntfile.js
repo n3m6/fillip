@@ -15,7 +15,6 @@ module.exports = function(grunt) {
         freeze:   true,
         camelcase: true,
         curly:    true,
-        eqeqeq:   true,
         nonew:    true,
         plusplus: true,
         quotmark: "single",
@@ -32,6 +31,7 @@ module.exports = function(grunt) {
         maxdepth: 3,
         //maxstatements: 10,
         maxcomplexity: 10,
+        white: true,
         globals: {
           console: true,
           /* Mocha */

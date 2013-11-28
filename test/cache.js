@@ -16,9 +16,9 @@ app.use(express.cookieParser());
 app.use(express.session({ secret: 'helloworldoneminute'}));
 app.use(app.router);
 
-describe('Fillip', function(){
+describe('Fillip', function () {
     
-  beforeEach(function(){
+  beforeEach(function () {
     fillip.initialize({
       logging: true,
       caching: {
@@ -28,7 +28,7 @@ describe('Fillip', function(){
       routes: {
         hello: {
           address: '/api/hello/:id',
-          controller: function(params, jsonCall){
+          controller: function (params, jsonCall) {
             jsonCall({ 
               hello: 'world'
             });  
@@ -38,7 +38,7 @@ describe('Fillip', function(){
         },
         world: {
           address: '/api/world/:worldid',
-          controller: function(params, jsonCall){
+          controller: function (params, jsonCall) {
             jsonCall({
               not: 'this'
             });
@@ -48,16 +48,16 @@ describe('Fillip', function(){
         },
         moon: {
           address: '/api/moon/:moonid',
-          controller: function(params, jsonCall){
-            if(params.moonid === '1'){
+          controller: function (params, jsonCall) {
+            if (params.moonid === '1') {
               jsonCall({
                 moon: 'europa'
               });
-            } else if(params.moonid === '2'){
+            } else if (params.moonid === '2') {
               jsonCall({
                 moon: 'io'
               });
-            } else if(params.moonid === '3'){
+            } else if (params.moonid === '3') {
               jsonCall({
                 moon: 'callisto'
               });
@@ -72,12 +72,12 @@ describe('Fillip', function(){
         },
         sun: {
           address: '/api/sun/:sunid',
-          controller: function(params, jsonCall){
-            if(params.sunid === '1'){
+          controller: function (params, jsonCall) {
+            if (params.sunid === '1') {
               jsonCall({
                 sun: 'sirius'
               });
-            } else if (params.sunid === '2'){
+            } else if (params.sunid === '2') {
               jsonCall({
                 sun: 'aldebaran'
               });
@@ -93,46 +93,46 @@ describe('Fillip', function(){
       }
     });
  
-    app.get('/api/sun/:sunid', function(req, res){
+    app.get('/api/sun/:sunid', function (req, res) {
       fillip.apicall(req, res);
     });
   });
 
-  describe('#apicall() Cache', function(){
+  describe('#apicall() Cache', function () {
     
-    it('should write to cache if it was previously not stored', function(done){
+    it('should write to cache if it was previously not stored', function (done) {
       var key = '';
-      app.get('/api/hello/:id', function(req, res){
+      app.get('/api/hello/:id', function (req, res) {
         key = req.sessionID + ':hello:1';
-        rclient.get(key, function(err, reply){
+        rclient.get(key, function (err, reply) {
           assert.isNull(reply, 'is not null');
-          fillip.apicall(req,res);
+          fillip.apicall(req, res);
         }); 
       });
       request(app)
         .get('/api/hello/1')
         .expect(200)
-        .end(function(err){
-          if(err) {
+        .end(function (err) {
+          if (err) {
             throw err;
           }
-          rclient.get(key, function(err, reply){
+          rclient.get(key, function (err, reply) {
             assert.isNotNull(reply, 'is null, should be not null');
             done();
           });
         });
     });
     
-    it('should match the first response stored in cache', function(done){
+    it('should match the first response stored in cache', function (done) {
       var key = '';
       var first = false;
       var firstReply = '';
-      app.get('/api/world/:worldid', function(req, res){
+      app.get('/api/world/:worldid', function (req, res) {
         key = req.sessionID + ':world:1';
-        if(!first){
-          rclient.get(key, function(err, reply){
+        if (!first) {
+          rclient.get(key, function (err, reply) {
             assert.isNull(reply, 'is not null');
-            fillip.apicall(req,res);
+            fillip.apicall(req, res);
           }); 
         } else {
           fillip.apicall(req, res);
@@ -142,18 +142,18 @@ describe('Fillip', function(){
       request(app)
         .get('/api/world/1')
         .expect(200)
-        .end(function(err){
-          if(err) {
+        .end(function (err) {
+          if (err) {
             throw err;
           }
           // execute second request
-          rclient.get(key, function(err, reply){
+          rclient.get(key, function (err, reply) {
             firstReply = reply;
             request(app)
               .get('/api/world/1')
               .expect(200)
-              .end(function(err, res){
-                if(err) {
+              .end(function (err, res) {
+                if (err) {
                   throw err;
                 }
                 assert.strictEqual(JSON.stringify(res.body), firstReply, 
@@ -164,16 +164,16 @@ describe('Fillip', function(){
         });
     });
 
-    it('should not respond with the same reply for different parameters', function(done){
+    it('should not respond with the same reply for different parameters', function (done) {
       var key = '';
       var first = false;
       var firstReply = '';
-      app.get('/api/moon/:moonid', function(req, res){
+      app.get('/api/moon/:moonid', function (req, res) {
         key = req.sessionID + ':moon:' + req.params[Object.keys(req.params)[0]];
-        if(!first){
-          rclient.get(key, function(err, reply){
+        if (!first) {
+          rclient.get(key, function (err, reply) {
             assert.isNull(reply, 'is not null');
-            fillip.apicall(req,res);
+            fillip.apicall(req, res);
           }); 
         } else {
           fillip.apicall(req, res);
@@ -183,18 +183,18 @@ describe('Fillip', function(){
       request(app)
         .get('/api/moon/1')
         .expect(200)
-        .end(function(err){
-          if(err) {
+        .end(function (err) {
+          if (err) {
             throw err;
           }
           // execute second request
-          rclient.get(key, function(err, reply){
+          rclient.get(key, function (err, reply) {
             firstReply = reply;
             request(app)
               .get('/api/moon/2')
               .expect(200)
-              .end(function(err, res){
-                if(err) {
+              .end(function (err, res) {
+                if (err) {
                   throw err;
                 }
                 assert.notStrictEqual(JSON.stringify(res.body), firstReply, 
@@ -205,14 +205,14 @@ describe('Fillip', function(){
         });
     });
 
-    it('should hit the cache with the same key for the same session', function(){
+    it('should hit the cache with the same key for the same session', function () {
       var cookie;
 
       request(app)
         .get('/api/sun/1')
         .expect(200)
-        .end(function(err, res){
-          if(err){
+        .end(function (err, res) {
+          if (err) {
             throw err;
           }
           cookie = res.header['set-cookie'];
@@ -220,8 +220,8 @@ describe('Fillip', function(){
             .get('/api/sun/1')
             .set('cookie', cookie)
             .expect(200)
-            .end(function(err){
-              if(err){
+            .end(function (err) {
+              if (err) {
                 throw err;
               }
             });

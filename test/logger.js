@@ -15,9 +15,9 @@ app.use(express.cookieParser());
 app.use(express.session({ secret: 'helloworldoneminute'}));
 app.use(app.router);
 
-describe('Fillip', function(){
+describe('Fillip', function () {
     
-  beforeEach(function(){
+  beforeEach(function () {
     fillip.initialize({
       logging: true,
       caching: {
@@ -27,7 +27,7 @@ describe('Fillip', function(){
       routes: {
         hello: {
           address: '/api/hello/:id',
-          controller: function(params, jsonCall){
+          controller: function (params, jsonCall) {
             jsonCall({ 
               hello: 'world'
             });  
@@ -37,7 +37,7 @@ describe('Fillip', function(){
         },
         world: {
           address: '/api/world/:worldid',
-          controller: function(params, jsonCall){
+          controller: function (params, jsonCall) {
             jsonCall({
               not: 'this'
             });
@@ -49,17 +49,17 @@ describe('Fillip', function(){
     });
   });
 
-  describe('#apicall()', function(){
+  describe('#apicall()', function () {
     
-    it('should throw an error if route is not found for the request', function(done){
-      app.get('/api/test/:id', function(req, res){
-        fillip.apicall(req,res);
+    it('should throw an error if route is not found for the request', function (done) {
+      app.get('/api/test/:id', function (req, res) {
+        fillip.apicall(req, res);
       });
       request(app)
         .get('/api/test/?callback=json_callback')
         .expect(404)
-        .end(function(err){
-          if(err) {
+        .end(function (err) {
+          if (err) {
             //console.log(err);
             done(err);
           } else {
