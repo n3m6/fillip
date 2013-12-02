@@ -27,7 +27,7 @@ describe('Fillip', function () {
       routes: {
         hello: {
           address: '/api/hello/:id',
-          controller: function (params, jsonCall) {
+          controller: function (req, jsonCall) {
             jsonCall({ 
               hello: 'world'
             });  
@@ -37,7 +37,7 @@ describe('Fillip', function () {
         },
         world: {
           address: '/api/world/:worldid',
-          controller: function (params, jsonCall) {
+          controller: function (req, jsonCall) {
             jsonCall({
               not: 'this'
             });

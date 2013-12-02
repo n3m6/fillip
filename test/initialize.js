@@ -19,7 +19,7 @@ describe('Fillip', function () {
         routes: { 
           hello: {
             address:    '/api/hello',
-            controller: function (params, jsonCall) {
+            controller: function (req, jsonCall) {
               jsonCall({ hello: 'world' });
             },
             caching:    true,
@@ -215,7 +215,7 @@ describe('Fillip', function () {
           routes: {
             hello: {
               address: '/api/user',
-              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
+              controller: function (req, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: 1
             }
           }
@@ -234,7 +234,7 @@ describe('Fillip', function () {
           routes: {
             hello: {
               address: '/api/user',
-              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
+              controller: function (req, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: true
             }
           }
@@ -253,7 +253,7 @@ describe('Fillip', function () {
           routes: {
             hello: {
               address: '/api/user',
-              controller: function (params, jsonCall) { jsonCall({ world: 'hello' }); },
+              controller: function (req, jsonCall) { jsonCall({ world: 'hello' }); },
               caching: true,
               expiry: 'foahbodey'
             }
@@ -272,7 +272,7 @@ describe('Fillip', function () {
         routes: {
           hello: {
             address: '/api/user', 
-            controller: function (params, jsonCall) { jsonCall({ hello: 'hello' }); }, 
+            controller: function (req, jsonCall) { jsonCall({ hello: 'hello' }); }, 
             caching: true,
             expiry: 60
           }

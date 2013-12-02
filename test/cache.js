@@ -28,7 +28,7 @@ describe('Fillip', function () {
       routes: {
         hello: {
           address: '/api/hello/:id',
-          controller: function (params, jsonCall) {
+          controller: function (req, jsonCall) {
             jsonCall({ 
               hello: 'world'
             });  
@@ -38,7 +38,7 @@ describe('Fillip', function () {
         },
         world: {
           address: '/api/world/:worldid',
-          controller: function (params, jsonCall) {
+          controller: function (req, jsonCall) {
             jsonCall({
               not: 'this'
             });
@@ -48,16 +48,16 @@ describe('Fillip', function () {
         },
         moon: {
           address: '/api/moon/:moonid',
-          controller: function (params, jsonCall) {
-            if (params.moonid === '1') {
+          controller: function (req, jsonCall) {
+            if (req.params.moonid === '1') {
               jsonCall({
                 moon: 'europa'
               });
-            } else if (params.moonid === '2') {
+            } else if (req.params.moonid === '2') {
               jsonCall({
                 moon: 'io'
               });
-            } else if (params.moonid === '3') {
+            } else if (req.params.moonid === '3') {
               jsonCall({
                 moon: 'callisto'
               });
@@ -72,12 +72,12 @@ describe('Fillip', function () {
         },
         sun: {
           address: '/api/sun/:sunid',
-          controller: function (params, jsonCall) {
-            if (params.sunid === '1') {
+          controller: function (req, jsonCall) {
+            if (req.params.sunid === '1') {
               jsonCall({
                 sun: 'sirius'
               });
-            } else if (params.sunid === '2') {
+            } else if (req.params.sunid === '2') {
               jsonCall({
                 sun: 'aldebaran'
               });

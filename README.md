@@ -47,11 +47,11 @@ app.get('/api/hello:id', function(req, res){
 
 Replace __api.hello__ with your custom api function.
 
-Your controller receives a params object and a callback function. The params object contains request parameters in an associative array.
+Your controller receives the request object and a callback function. The request object contains request parameters in the params associative array.
 Your controller should invoke the callback with the json object, as follows -
 
 ```javascript
-exports.hello = function(params, jsonCall){
+exports.hello = function(req, jsonCall){
   var json = {
     hello: 'world'
   };
